@@ -24,7 +24,3 @@ for m in mask :
         m = str(m[:z]) + "0" + str(m[z:])
     ans = int(m, 2)
     print(ans)
-
-
-
-
