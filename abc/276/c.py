@@ -53,9 +53,7 @@ def solve() :
             ans += f(chroused[-(i+2)], std)
             break
     
-    for a in ans :
-        print(a, end=" ")
-    print()
+    print(*ans)
 
 if __name__ == '__main__' :
     solve()
