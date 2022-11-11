@@ -71,12 +71,11 @@ int main() {
     vector<long long> a(n); for (int i = 0; i < n; i++) cin >> a[i];
     int q; cin >> q;
     vector<long long> x(q); for (int i = 0; i < q; i++) cin >> x[i];
-    
+
+    sort(a.begin(), a.end());
     for (int i = 0; i < q; i++) {
-        vector<long long> na = a; na.push_back(x[i]);
-        sort(na.begin(), na.end());
-        int pos = binsll(0, n, x[i], na);
-        cout << pos << endl;
+        auto pos = lower_bound(a.begin(), a.end(), x[i]);
+        cout << pos - a.begin() << endl;
     }
 
     return 0;
