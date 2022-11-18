@@ -1,21 +1,8 @@
-//binary search (int)
-int binsi(int left, int right, int key, vector<int> vec) {
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (key == vec[mid]) return mid;
-        else if (key < vec[mid]) right = mid - 1;
-        else if (vec[mid] < key) left = mid + 1; 
-    }
-    return -1;
-}
+def transpose(l : list) :
+    t = list(zip(*l))
+    ret = [list(comp) for comp in t]
+    return ret
 
-//binary search (long long)
-int binsll(int left, int right, long long key, vector<long long> vec) {
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (key == vec[mid]) return mid;
-        else if (key < vec[mid]) right = mid - 1;
-        else if (vec[mid] < key) left = mid + 1; 
-    }
-    return -1;
-}
+def sort2dListBySpecificRow(l : list, by = 0, reverse=False) :
+    ret = transpose(sorted(transpose(l), key=lambda x: x[by], reverse=reverse))
+    return ret

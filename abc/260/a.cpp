@@ -3,6 +3,9 @@ using namespace std;
 #define rep(i, n) for (int i = 0; i < (n); i++)
 #define rrep(i, n) for (int i = n-1; i >= 0; i--)
 
+vector<char> UPPERCASE = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+vector<char> LOWERCASE = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+
 //print 2d vector<int>
 void p2dveci(vector<vector<int>> vv) {
     for (int i = 0; i < vv.size(); i++) {
@@ -67,14 +70,16 @@ int binsll(int left, int right, long long key, vector<long long> vec) {
 
 int main() {
 
-    int n; cin >> n;
-    vector<int> h(n); rep(i, n) cin >> h[i];
-
-    vector<int> dp(n); dp[0] = 0; dp[1] = dp[0] + abs((h[0] - h[1]));
-    for (int i = 1; i < n; i++) dp[i] = min(dp[i-1] + abs(h[i-1] + h[i]), dp[i-1] + abs(h[i-2] + h[i]));
-
-    rep(i, n) cout << dp[i] << " ";
-    cout << endl;
+    string s; cin >> s;
+    map<char, int> counter;
+    for (char alpha : s) counter[alpha] += 1;
+    for (auto p : counter) {
+        if (p.second == 1) {
+            cout << p.first << endl;
+            return 0;
+        }
+    }
+    cout << -1 << endl;
 
     return 0;
 }
