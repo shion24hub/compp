@@ -3,6 +3,9 @@ using namespace std;
 #define rep(i, n) for (int i = 0; i < (n); i++)
 #define rrep(i, n) for (int i = n-1; i >= 0; i--)
 
+vector<char> UPPERCASE = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+vector<char> LOWERCASE = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+
 //print 2d vector<int>
 void p2dveci(vector<vector<int>> vv) {
     for (int i = 0; i < vv.size(); i++) {
@@ -15,6 +18,16 @@ void p2dveci(vector<vector<int>> vv) {
 
 //print 2d vector<long long>
 void p2dvecll(vector<vector<long long>> vv) {
+    for (int i = 0; i < vv.size(); i++) {
+        for (int j = 0; j < vv[i].size(); j++) {
+            cout << vv[i][j] << ' ';
+        }
+        cout << endl;
+    }
+}
+
+//print 2d vector<bool>
+void p2dvecb(vector<vector<bool>> vv) {
     for (int i = 0; i < vv.size(); i++) {
         for (int j = 0; j < vv[i].size(); j++) {
             cout << vv[i][j] << ' ';
@@ -67,29 +80,36 @@ int binsll(int left, int right, long long key, vector<long long> vec) {
 
 int main() {
 
-    int n; cin >> n;
-    vector<int> h(n); rep(i, n) cin >> h[i];
+    int n, s; cin >> n >> s;
+    vector<int> a(n); rep(i, n) cin >> a[i];
 
-    vector<int> dp(n, 0); dp[0] = 0; dp[1] = abs((h[0] - h[1]));
-    for (int i = 2; i < n; i++) dp[i] = min(dp[i-1] + abs(h[i-1] - h[i]), dp[i-2] + abs(h[i-2] - h[i]));
-
-    vector<int> ans = {n-1};
-    int pos = n-1;
-    while (pos >= 1) {
-        if (dp[pos-1] + abs(h[pos-1] - h[pos]) == dp[pos]) {
-            ans.push_back(pos-1);
-            pos -= 1;
-        }
-        else {
-            ans.push_back(pos-2);
-            pos -= 2;
+    vector<vector<bool>> dp(n+1, vector<bool> (s+1, false));
+    dp[0][0] = true;
+    for (int i = 1; i < n+1; i++) {
+        for (int j = 0; j < s+1; j++) {
+            if (dp[i-1][j]) dp[i][j] = true;
+            if (j - a[i-1] >= 0 && dp[i-1][j-a[i-1]]) dp[i][j] = true;
         }
     }
 
-    sort(ans.begin(), ans.end());
+    if (!dp[n][s]) {
+        cout << -1 << endl;
+        return 0;
+    }
+
+    vector<int> ans;
+    int pos = s;
+    for (int i = n; i >= 1; i--) {
+        if (pos - a[i-1] >= 0 && dp[i-1][pos - a[i-1]]) {
+            ans.push_back(i);
+            pos -= a[i-1];
+        }
+    }
+
     cout << ans.size() << endl;
-    for (int i = 0; i < ans.size(); i++) cout << ans[i]+1 << " ";
-    cout << endl;
+    reverse(ans.begin(), ans.end());
+    rep(i, ans.size()) cout << ans[i] << " ";
+    cout << endl; 
 
     return 0;
 }

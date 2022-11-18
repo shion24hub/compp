@@ -3,6 +3,9 @@ using namespace std;
 #define rep(i, n) for (int i = 0; i < (n); i++)
 #define rrep(i, n) for (int i = n-1; i >= 0; i--)
 
+vector<char> UPPERCASE = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+vector<char> LOWERCASE = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+
 //print 2d vector<int>
 void p2dveci(vector<vector<int>> vv) {
     for (int i = 0; i < vv.size(); i++) {
@@ -68,28 +71,29 @@ int binsll(int left, int right, long long key, vector<long long> vec) {
 int main() {
 
     int n; cin >> n;
-    vector<int> h(n); rep(i, n) cin >> h[i];
+    long long w; cin >> w;
+    vector<long long> ws(n), vs(n); rep(i, n) cin >> ws[i] >> vs[i];
 
-    vector<int> dp(n, 0); dp[0] = 0; dp[1] = abs((h[0] - h[1]));
-    for (int i = 2; i < n; i++) dp[i] = min(dp[i-1] + abs(h[i-1] - h[i]), dp[i-2] + abs(h[i-2] - h[i]));
-
-    vector<int> ans = {n-1};
-    int pos = n-1;
-    while (pos >= 1) {
-        if (dp[pos-1] + abs(h[pos-1] - h[pos]) == dp[pos]) {
-            ans.push_back(pos-1);
-            pos -= 1;
-        }
-        else {
-            ans.push_back(pos-2);
-            pos -= 2;
+    long long MIN = -1000000000000000;
+    long long maxv = 1000000;
+    vector<vector<long long>> dp(n+1, vector<long long> (maxv, MIN));
+    for (int i = 1; i < n+1; i++) {
+        for (int j = 0; j < maxv; j++) {
+            if (j < vs[i] || dp[i-1][j-vs[i-1]] + ws[i-1] > w) dp[i][j] = dp[i-1][j];
+            else dp[i][j] = min(dp[i-1][j], dp[i-1][j-vs[i-1]] + ws[i-1]);
         }
     }
 
-    sort(ans.begin(), ans.end());
-    cout << ans.size() << endl;
-    for (int i = 0; i < ans.size(); i++) cout << ans[i]+1 << " ";
-    cout << endl;
+    long long ans = 0;
+    long long comp = 0;
+    for (int i = 0; i < maxv; i++) {
+        if (comp < dp[n][i]) {
+            ans = i;
+            comp = dp[n][i];
+        }
+    }
+
+    cout << ans << endl;
 
     return 0;
 }
