@@ -71,14 +71,32 @@ int binsll(int left, int right, long long key, vector<long long> vec) {
 int main() {
 
     int n; cin >> n;
-    set<vector<int>> s;
-    for (int i = 0; i < n; i++) {
-        int l; cin >> l;
-        vector<int> a(l); rep(i, l) cin >> a[i];
-        s.insert(a);
-    }
+    vector<string> a(n); rep(i, n) cin >> a[i];
 
-    cout << s.size() << endl;
+    vector<int> dx = {0, 1, -1}, dy = {0, 1, -1};
+    vector<long long> anss;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            int pi = i, pj = j;
+            for (int x = 0; x < 3; x++) {
+                for (int y = 0; y < 3; y++) {
+                    long long place = pow(10, n-1);
+                    long long sum = (a[pi][pj] - '0') * place;
+                    if (x == 0 && y == 0) continue;
+                    for (int count = 0; count < n-1; count++) {
+                        pi = (((pi + dx[x])) % n + n) % n;
+                        pj = ((pj + dy[y]) % n + n) % n;
+                        place /= 10;
+                        sum += (a[pi][pj] - '0') * place;
+                    }
+                    anss.push_back(sum);
+                }
+            }
+
+        }
+    }
+    
+    cout << *max_element(anss.begin(), anss.end()) << endl;
 
     return 0;
 }

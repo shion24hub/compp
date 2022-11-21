@@ -71,14 +71,15 @@ int binsll(int left, int right, long long key, vector<long long> vec) {
 int main() {
 
     int n; cin >> n;
-    set<vector<int>> s;
+    vector<int> p(n); rep(i, n) cin >> p[i];
+
+    vector<int> q(n);
     for (int i = 0; i < n; i++) {
-        int l; cin >> l;
-        vector<int> a(l); rep(i, l) cin >> a[i];
-        s.insert(a);
+        q[p[i]-1] = i + 1; 
     }
 
-    cout << s.size() << endl;
+    rep(i, n) cout << q[i] << " ";
+    cout << endl;
 
     return 0;
 }
