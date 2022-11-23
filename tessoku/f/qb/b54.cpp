@@ -57,24 +57,20 @@ int binsll(int left, int right, long long key, vector<long long> vec) {
 
 int main() {
 
-	int n, d; cin >> n >> d;
-	vector<long long> x(n), y(n); rep(i, n) cin >> x[i] >> y[i];
+    int n; cin >> n;
+    vector<long long> a(n); rep(i, n) cin >> a[i];
 
-	vector<vector<long long>> G(d+1);
-	for (int i = 0; i < n; i++) G[x[i]].push_back(y[i]);
+    map<long long, long long> m;
+    for (int i = 0; i < n; i++) m[a[i]] += 1;
 
-	long long ans = 0;
-	priority_queue<long long> pq;
-	for (int i = 1; i <= d; i++) {
-		for (int j : G[i]) pq.push(j);
-		
-		if (!pq.empty()) {
-			ans += pq.top();
-			pq.pop();
-		}
-	}
 
-	cout << ans << endl;
+    long long ans = 0;
+    for (auto p : m) {
+        long long n = p.second;
+        ans += n * (n - 1) / 2LL;
+    }
+
+    cout << ans << endl;
 
     return 0;
 }

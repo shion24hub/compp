@@ -55,26 +55,37 @@ int binsll(int left, int right, long long key, vector<long long> vec) {
     return -1;
 }
 
+long long getup(set<long long> s, long long x) {
+	auto itr = s.lower_bound(x);
+	if (itr == s.end()) return 10000000000000LL;
+	else return (*itr);
+}
+
+long long getdown(set<long long> s, long long x) {
+	auto itr = s.lower_bound(-x);
+	if (itr == s.end()) return 10000000000000LL;
+	else return -(*itr);
+}
+
 int main() {
 
-	int n, d; cin >> n >> d;
-	vector<long long> x(n), y(n); rep(i, n) cin >> x[i] >> y[i];
-
-	vector<vector<long long>> G(d+1);
-	for (int i = 0; i < n; i++) G[x[i]].push_back(y[i]);
-
-	long long ans = 0;
-	priority_queue<long long> pq;
-	for (int i = 1; i <= d; i++) {
-		for (int j : G[i]) pq.push(j);
-		
-		if (!pq.empty()) {
-			ans += pq.top();
-			pq.pop();
+    int q; cin >> q;
+    long long t, x;
+	set<long long> s1, s2;
+	for (int i = 0; i < q; i++) {
+		cin >> t >> x;
+		if (t == 1) {
+			s1.insert(x);
+			s2.insert(-x);
+		}
+		else {
+			if (s1.empty()) {cout << -1 << endl; continue;}
+			long long v1 = getup(s1, x);
+			long long v2 = getdown(s2, x);
+			long long ans = min(x - v2, v1 - x);
+			cout << ans << endl;
 		}
 	}
-
-	cout << ans << endl;
 
     return 0;
 }
