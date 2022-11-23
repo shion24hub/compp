@@ -55,27 +55,26 @@ int binsll(int left, int right, long long key, vector<long long> vec) {
     return -1;
 }
 
+long long comb(long long n) {
+    return (n * n * n - 3 * n * n + 2 * n) / 6;
+}
+
 int main() {
 
     int n; cin >> n;
-	string s; cin >> s;
-    
-	vector<int> limitA(n), limitB(n);
-	limitA[0] = 1; limitB[n-1] = 1;
+    map<int, long long> counter;
+    int a;
+    for (int i = 0; i < n; i++) {
+        cin >> a;
+        counter[a] += 1;
+    }
 
-	//lower limit
-	for (int i = 1; i < n; i++) {
-		if (s[i-1] == 'A') limitA[i] = limitA[i-1] + 1;
-		else limitA[i] = 1;
-	}
-	for (int i = n-2; i >= 0; i--) {
-		if (s[i] == 'B') limitB[i] = limitB[i+1] + 1;
-		else limitB[i] = 1;
-	}
+    long long ans = 0;
+    for (auto p : counter) {
+        ans += comb(p.second);
+    }
 
-	long long ans = 0;
-	for (int i = 0; i < n; i++) ans += max(limitA[i], limitB[i]);
-	cout << ans << endl;
+    cout << ans << endl;
 
     return 0;
 }

@@ -57,25 +57,27 @@ int binsll(int left, int right, long long key, vector<long long> vec) {
 
 int main() {
 
-    int n; cin >> n;
-	string s; cin >> s;
-    
-	vector<int> limitA(n), limitB(n);
-	limitA[0] = 1; limitB[n-1] = 1;
+    int n, d; cin >> n >> d;
+    vector<long long> x(n), y(n); rep(i, n) cin >> x[i] >> y[i];
 
-	//lower limit
-	for (int i = 1; i < n; i++) {
-		if (s[i-1] == 'A') limitA[i] = limitA[i-1] + 1;
-		else limitA[i] = 1;
-	}
-	for (int i = n-2; i >= 0; i--) {
-		if (s[i] == 'B') limitB[i] = limitB[i+1] + 1;
-		else limitB[i] = 1;
-	}
+    long long ans = 0;
+    vector<bool> takenJobs(n+1, false);
+    for (int currentDay = 1; currentDay <= d; currentDay++) {
+        priority_queue<pair<int, int>> pq;
+        for (int j = 0; j < n; j++) {
+            if (takenJobs[j]) continue;
+            if (currentDay <= x[j]) {
+                pq.push(make_pair(y[j], j+1));
+            }
+        }
+        if (!pq.empty()) {
+            ans += pq.top().first;
+            takenJobs[pq.top().second] = true;
+        }
+    }
 
-	long long ans = 0;
-	for (int i = 0; i < n; i++) ans += max(limitA[i], limitB[i]);
-	cout << ans << endl;
+    cout << ans << endl;
+
 
     return 0;
 }

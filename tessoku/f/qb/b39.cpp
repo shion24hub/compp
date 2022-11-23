@@ -57,25 +57,31 @@ int binsll(int left, int right, long long key, vector<long long> vec) {
 
 int main() {
 
-    int n; cin >> n;
-	string s; cin >> s;
-    
-	vector<int> limitA(n), limitB(n);
-	limitA[0] = 1; limitB[n-1] = 1;
+    int n, d; cin >> n >> d;
+    vector<int> day(n), money(n);
+    set<pair<int, int>> s;
+    for (int i = 0; i < n; i++) cin >> day[i] >> money[i];
 
-	//lower limit
-	for (int i = 1; i < n; i++) {
-		if (s[i-1] == 'A') limitA[i] = limitA[i-1] + 1;
-		else limitA[i] = 1;
-	}
-	for (int i = n-2; i >= 0; i--) {
-		if (s[i] == 'B') limitB[i] = limitB[i+1] + 1;
-		else limitB[i] = 1;
-	}
+    vector<bool> takenJob(n, false);
+    int ans = 0;
+    for (int currentDay = 1; currentDay <= d; currentDay++) {
+        int maxMoney = 0;
+        int jobId = -1;
+        for (int j = 0; j < n; j++) {
+            if (takenJob[j]) continue;
+            if (day[j] <= currentDay && money[j] > maxMoney) {
+                maxMoney = money[j];
+                jobId = j;
+            }
+        }
 
-	long long ans = 0;
-	for (int i = 0; i < n; i++) ans += max(limitA[i], limitB[i]);
-	cout << ans << endl;
+        if (jobId != -1) {
+            takenJob[jobId] = true;
+            ans += maxMoney;
+        }
+    }
+
+    cout << ans << endl;
 
     return 0;
 }

@@ -58,24 +58,19 @@ int binsll(int left, int right, long long key, vector<long long> vec) {
 int main() {
 
     int n; cin >> n;
-	string s; cin >> s;
-    
-	vector<int> limitA(n), limitB(n);
-	limitA[0] = 1; limitB[n-1] = 1;
+    vector<int> a(n); rep(i, n) cin >> a[i];
 
-	//lower limit
-	for (int i = 1; i < n; i++) {
-		if (s[i-1] == 'A') limitA[i] = limitA[i-1] + 1;
-		else limitA[i] = 1;
-	}
-	for (int i = n-2; i >= 0; i--) {
-		if (s[i] == 'B') limitB[i] = limitB[i+1] + 1;
-		else limitB[i] = 1;
-	}
+    vector<vector<int>> dp(2009, vector<int>(2009));
+    for (int i = 0; i < n; i++) dp[n][i] = a[i];
 
-	long long ans = 0;
-	for (int i = 0; i < n; i++) ans += max(limitA[i], limitB[i]);
-	cout << ans << endl;
+    for (int i = n-1; i >= 1; i--) {
+        for (int j = 0; j < i; j++) {
+            if (i%2 != 0) dp[i][j] = max(dp[i+1][j], dp[i+1][j+1]);
+            else dp[i][j] = min(dp[i+1][j], dp[i+1][j+1]);
+        }
+    }
+
+    cout << dp[1][0] << endl;
 
     return 0;
 }
