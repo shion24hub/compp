@@ -20,8 +20,8 @@ void print(Head&& head, Tail&&... tail) {
 template <class T>
 void print(vector<T> &vec) {
   for (auto& a : vec) {
-    cout << a;
-    if (&a != &vec.back()) cout << ' ';
+	cout << a;
+	if (&a != &vec.back()) cout << ' ';
   }
   cout << endl;
 }
@@ -29,74 +29,65 @@ void print(vector<T> &vec) {
 template <class T>
 void print(vector<vector<T>> &df) {
   for (auto& vec : df) {
-    print(vec);
+	print(vec);
   }
 }
 
 //binary search (int)
 int binsi(int left, int right, int key, vector<int> vec) {
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (key == vec[mid]) return mid;
-        else if (key < vec[mid]) right = mid - 1;
-        else if (vec[mid] < key) left = mid + 1; 
-    }
-    return -1;
+	while (left <= right) {
+		int mid = left + (right - left) / 2;
+		if (key == vec[mid]) return mid;
+		else if (key < vec[mid]) right = mid - 1;
+		else if (vec[mid] < key) left = mid + 1; 
+	}
+	return -1;
 }
 
 //binary search (long long)
 int binsll(int left, int right, long long key, vector<long long> vec) {
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (key == vec[mid]) return mid;
-        else if (key < vec[mid]) right = mid - 1;
-        else if (vec[mid] < key) left = mid + 1; 
-    }
-    return -1;
+	while (left <= right) {
+		int mid = left + (right - left) / 2;
+		if (key == vec[mid]) return mid;
+		else if (key < vec[mid]) right = mid - 1;
+		else if (vec[mid] < key) left = mid + 1; 
+	}
+	return -1;
 }
 
 int main() {
 
-    int n, m; cin >> n >> m;
-    map<int, vector<int>> tree;
-    int a, b;
-    for (int i = 0; i < m; i++) {
-        cin >> a >> b;
-        tree[a].push_back(b);
-        tree[b].push_back(a);
-    }
+	int n, m; cin >> n >> m;
+	map<int, vector<int>> tree;
+	int a, b;
+	for (int i = 0; i < m; i++) {
+		cin >> a >> b;
+		tree[a].push_back(b);
+		tree[b].push_back(a);
+	}
 
-    vector<bool> seen(n+1, false);
-    stack<int> st;
-    stack<int> path;
-    seen[1] = true; st.push(1);
-    while (!st.empty()) {
-        int pos = st.top();
-        st.pop();
+	vector<int> seen(n+1, -2); seen[1] = -1;
+	stack<int> st; st.push(1);
+	while (!st.empty()) {
+		int pos = st.top();
+		st.pop();
+		for (auto next : tree[pos]) {
+			if (seen[next] >= -1) continue;
+			seen[next] = pos;
+			st.push(next);
+		}
+	}
 
-        path.push(pos);
-        if (pos == n) break;
+	vector<int> ans;
+	int pos = n;
+	while (pos != -1) {
+		ans.push_back(pos);
+		pos = seen[pos];
+	}
+	reverse(ans.begin(), ans.end());
 
-        int can_visit = 0;
-        for (auto next : tree[pos]) {
-            if (!seen[next]) {
-                can_visit ++;
-                seen[pos] = true;
-                st.push(next);
-            }
-        }
-        if (can_visit == 0) path.pop();
-    }
+	rep(i, ans.size()) cout << ans[i] << " ";
+	cout << endl;
 
-    int pathsize = path.size();
-    vector<int> ans;
-    for (int i = 0; i < pathsize; i++) {
-        ans.push_back(path.top());
-        path.pop();
-    }
-    reverse(ans.begin(), ans.end());
-    for (int i = 0; i < ans.size(); i++) cout << ans[i] << " ";
-    cout << endl;
-
-    return 0;
+	return 0;
 }
