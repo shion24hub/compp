@@ -56,26 +56,26 @@ int binsll(int left, int right, long long key, vector<long long> vec) {
 }
 
 int main() {
-	
-	//WA
 
-	int n, m; cin >> n >> m;
-	map<int, vector<int>> tree;
-	int a, b;
-	for (int i = 0; i < m; i++) {
-		cin >> a >> b;
-		tree[a].push_back(b);
-		tree[b].push_back(a);
-	}
+    int n, m; cin >> n >> m;
+    map<int, int> G;
+    int a, b;
+    for (int i = 0; i < m; i++) {
+        cin >> a >> b;
+        G[a]++;
+        G[b]++;
+    }
 
-	for (auto p : tree) {
-		cout << p.first << ": {";
-		for (int i = 0; i < p.second.size(); i++) {
-			cout << p.second[i];
-			if(i != p.second.size()-1) cout << ", ";
-		}
-		cout << "}" << endl;
-	} 
+    int max = 0;
+    int ans;
+    for (auto p : G) {
+        if (max < p.second) {
+            max = p.second;
+            ans = p.first;
+        }
+    }
+
+    cout << ans << endl;
 
     return 0;
 }

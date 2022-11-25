@@ -56,26 +56,47 @@ int binsll(int left, int right, long long key, vector<long long> vec) {
 }
 
 int main() {
-	
-	//WA
 
-	int n, m; cin >> n >> m;
-	map<int, vector<int>> tree;
-	int a, b;
-	for (int i = 0; i < m; i++) {
-		cin >> a >> b;
-		tree[a].push_back(b);
-		tree[b].push_back(a);
-	}
+    int n, m; cin >> n >> m;
+    map<int, vector<int>> tree;
+    int a, b;
+    for (int i = 0; i < m; i++) {
+        cin >> a >> b;
+        tree[a].push_back(b);
+        tree[b].push_back(a);
+    }
 
-	for (auto p : tree) {
-		cout << p.first << ": {";
-		for (int i = 0; i < p.second.size(); i++) {
-			cout << p.second[i];
-			if(i != p.second.size()-1) cout << ", ";
-		}
-		cout << "}" << endl;
-	} 
+    vector<bool> seen(n+1, false);
+    stack<int> st;
+    stack<int> path;
+    seen[1] = true; st.push(1);
+    while (!st.empty()) {
+        int pos = st.top();
+        st.pop();
+
+        path.push(pos);
+        if (pos == n) break;
+
+        int can_visit = 0;
+        for (auto next : tree[pos]) {
+            if (!seen[next]) {
+                can_visit ++;
+                seen[pos] = true;
+                st.push(next);
+            }
+        }
+        if (can_visit == 0) path.pop();
+    }
+
+    int pathsize = path.size();
+    vector<int> ans;
+    for (int i = 0; i < pathsize; i++) {
+        ans.push_back(path.top());
+        path.pop();
+    }
+    reverse(ans.begin(), ans.end());
+    for (int i = 0; i < ans.size(); i++) cout << ans[i] << " ";
+    cout << endl;
 
     return 0;
 }
