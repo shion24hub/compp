@@ -73,27 +73,17 @@ class UnionFind {
 
 int main() {
 
-    long long n, k; cin >> n >> k;
+    int n; cin >> n;
     vector<long long> c(n); rep(i, n) cin >> c[i];
 
-    map<long long, long long> counter;
-    set<long long> s;
-    for (int i = 0; i < k; i++) {
-        s.insert(c[i]);
-        counter[c[i]] ++;
-    }
+    sort(c.begin(), c.end());
 
-    long long ans = s.size();
-    for (int i = k; i < n; i++) {
-        s.insert(c[i]);
-        counter[c[i]] ++;
-        counter[c[i-k]] --;
-        if (counter[c[i-k]] == 0 || !counter.count(c[i-k])) {
-            s.erase(c[i-k]);
-        }
-        if (ans < s.size()) {ans = s.size();}
-    }
+    long long mod = 1000000007; 
 
+    long long ans = c[0] % mod;
+    for (long long i = 1; i < n; i++) {
+        ans = (ans * (c[i]-i)) % mod;
+    }
     cout << ans << endl;
 
     return 0;
