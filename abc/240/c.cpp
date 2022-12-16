@@ -73,28 +73,20 @@ class UnionFind {
 
 int main() {
 
-    int n; cin >> n;
-    vector<string> s(n); rep(i, n) cin >> s[i];
+    int n, x; cin >> n >> x;
+    vector<int> a(n), b(n); rep(i, n) cin >> a[i] >> b[i];
 
-    vector<int> anss;
-    for (int target = 0; target < 10; target++) {
-        char tar = target + '0';
-        //targetが各リールの何番目にあるか？
-        vector<int> pos;
-        map<int, int> counter;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (s[i][j] == tar) {
-                    if (counter.count(j)) pos.push_back(j + counter[j]*10);
-                    else pos.push_back(j);
-                    counter[j] ++;
-                }
-            }
+    vector<vector<int>> dp(n+1, vector<int>(x+1, false));
+    dp[0][0] = true;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 0; j <= x; j++) {
+            if (j-a[i-1] >= 0 && dp[i-1][j-a[i-1]]) dp[i][j] = true;
+            if (j-b[i-1] >= 0 && dp[i-1][j-b[i-1]]) dp[i][j] = true;
         }
-        anss.push_back(*max_element(pos.begin(), pos.end()));
     }
 
-    cout << *min_element(anss.begin(), anss.end()) << endl;
+    if (dp[n][x]) cout << "Yes" << endl;
+    else cout << "No" << endl;
 
     return 0;
 }

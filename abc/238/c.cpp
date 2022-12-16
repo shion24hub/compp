@@ -71,30 +71,19 @@ class UnionFind {
    }
 };
 
+long long seqsum(long long a, long long l, long long n, long long mod) {
+    long long comp1 = (a + l) % mod;
+    long long comp2 = n % mod;
+    long long comp3 = (comp1 * comp2) % mod;
+    long long ret = comp3 * 2
+}
+
 int main() {
 
-    int n; cin >> n;
-    vector<string> s(n); rep(i, n) cin >> s[i];
+    long long n; cin >> n;
+    long long mod = 998244353;
 
-    vector<int> anss;
-    for (int target = 0; target < 10; target++) {
-        char tar = target + '0';
-        //targetが各リールの何番目にあるか？
-        vector<int> pos;
-        map<int, int> counter;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (s[i][j] == tar) {
-                    if (counter.count(j)) pos.push_back(j + counter[j]*10);
-                    else pos.push_back(j);
-                    counter[j] ++;
-                }
-            }
-        }
-        anss.push_back(*max_element(pos.begin(), pos.end()));
-    }
 
-    cout << *min_element(anss.begin(), anss.end()) << endl;
 
     return 0;
 }

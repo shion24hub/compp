@@ -76,25 +76,47 @@ int main() {
     int n; cin >> n;
     vector<string> s(n); rep(i, n) cin >> s[i];
 
-    vector<int> anss;
-    for (int target = 0; target < 10; target++) {
-        char tar = target + '0';
-        //targetが各リールの何番目にあるか？
-        vector<int> pos;
-        map<int, int> counter;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (s[i][j] == tar) {
-                    if (counter.count(j)) pos.push_back(j + counter[j]*10);
-                    else pos.push_back(j);
-                    counter[j] ++;
+    bool ans = false;
+    vector<int> vi = {-1, 0, 1}, vj = {-1, 0, 1};
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+
+            for (int k = 0; k < vi.size(); k++) {
+                for (int l = 0; l < vj.size(); l++) {
+                    if (k == 1 && l == 1) continue; // (0, 0)のとき
+                    int di = vi[k], dj = vj[l];
+                    if (i < 5 && di == -1 && dj == 0) continue; //縦上
+                    if (n - i < 5 && di == 1 && dj == 0) continue; //縦下 
+                    if (j < 5 && di == 0 && dj == -1) continue; // 横左
+                    if(n - j < 5 && di == 0 && dj == 1) continue; //横右
+                    if ((i < 5 && di == -1) || (j < 5 && dj == -1)) continue; //左斜め上
+                    if ((n - i < 5 && di == 1) || (j < 5 && dj == -1)) continue; //左斜め下
+                    if ((i < 5 && di == -1) || (n - j < 5 && dj == 1)) continue; //右斜め上
+                    if ((n - i < 5 && di == 1) || (n - i < 5 && dj == 1)) continue; //右斜め下
+
+                    cout << "debug" << endl;
+
+                    int cnt;
+                    if (s[i][j] == '#') cnt = 1;
+                    else cnt = 0;
+                    int pi = i, pj = j;
+                    cout << "i : " << i << " j : " << j << endl;
+                    for (int m = 0; m < 5; m++) {
+                        pi += di;
+                        pj += dj;
+                        cout << di << " " << dj << endl;
+                        cout << pi << " " << pj << endl;
+                        if (s[pi][pj] == '#') cnt ++;
+                    }
+                    cout << "debug" << endl;
+                    if (cnt >= 4) {ans = true;}
                 }
             }
         }
-        anss.push_back(*max_element(pos.begin(), pos.end()));
     }
 
-    cout << *min_element(anss.begin(), anss.end()) << endl;
+    if (ans) {cout << "Yes" << endl;}
+    else {cout << "No" << endl;}
 
     return 0;
 }

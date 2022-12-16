@@ -73,28 +73,38 @@ class UnionFind {
 
 int main() {
 
-    int n; cin >> n;
-    vector<string> s(n); rep(i, n) cin >> s[i];
+    long long n, k, x; cin >> n >> k >> x;
+    vector<long long> a(n); rep(i, n) cin >> a[i];
 
-    vector<int> anss;
-    for (int target = 0; target < 10; target++) {
-        char tar = target + '0';
-        //targetが各リールの何番目にあるか？
-        vector<int> pos;
-        map<int, int> counter;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (s[i][j] == tar) {
-                    if (counter.count(j)) pos.push_back(j + counter[j]*10);
-                    else pos.push_back(j);
-                    counter[j] ++;
-                }
+    sort(a.begin(), a.end());
+    reverse(a.begin(), a.end());
+    for (int i = 0; i < n; i++) {
+        if (k > 0) {
+            long long used = a[i] / x;
+            if (k >= used) {
+                a[i] = a[i] - used * x;
+                k -= used;
+            }
+            else {
+                a[i] = a[i] - k * x;
+                k = 0;
             }
         }
-        anss.push_back(*max_element(pos.begin(), pos.end()));
     }
 
-    cout << *min_element(anss.begin(), anss.end()) << endl;
+    //クーポンが残っていた場合
+    sort(a.begin(), a.end());
+    reverse(a.begin(), a.end());
+    for (int i = 0; i < n; i++) {
+        if (k > 0) {
+            a[i] = 0;
+            k -= 1;
+        }
+    }
+
+    long long ans = 0;
+    for (int i = 0; i < n; i++) {ans += a[i];}
+    cout << ans << endl;
 
     return 0;
 }

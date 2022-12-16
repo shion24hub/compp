@@ -74,27 +74,21 @@ class UnionFind {
 int main() {
 
     int n; cin >> n;
-    vector<string> s(n); rep(i, n) cin >> s[i];
+    long long mod = 998244353;
 
-    vector<int> anss;
-    for (int target = 0; target < 10; target++) {
-        char tar = target + '0';
-        //targetが各リールの何番目にあるか？
-        vector<int> pos;
-        map<int, int> counter;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (s[i][j] == tar) {
-                    if (counter.count(j)) pos.push_back(j + counter[j]*10);
-                    else pos.push_back(j);
-                    counter[j] ++;
-                }
-            }
+    vector<vector<long long>> dp(n+1, vector<long long>(10));
+    for (int i = 1; i <= 9; i++) dp[1][i] = 1;
+    for (int i = 2; i <= n; i++) {
+        for (int j = 1; j <= 9; j++) {
+            if (j == 1) dp[i][j] = (dp[i-1][j] + dp[i-1][j+1]) % mod;
+            else if (j == 9) dp[i][j] = (dp[i-1][j-1] + dp[i-1][j]) % mod;
+            else dp[i][j] = (dp[i-1][j-1] + dp[i-1][j] + dp[i-1][j+1]) % mod;
         }
-        anss.push_back(*max_element(pos.begin(), pos.end()));
     }
 
-    cout << *min_element(anss.begin(), anss.end()) << endl;
+    long long ans = 0;
+    for (int i = 1; i <= 9; i++) ans = (ans + dp[n][i]) % mod;
+    cout << ans << endl;
 
     return 0;
 }

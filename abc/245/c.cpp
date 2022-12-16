@@ -73,28 +73,29 @@ class UnionFind {
 
 int main() {
 
-    int n; cin >> n;
-    vector<string> s(n); rep(i, n) cin >> s[i];
+    long long n, k; cin >> n >> k;
+    vector<long long> a(n), b(n); 
+    rep(i, n) cin >> a[i];
+    rep(i, n) cin >> b[i];
 
-    vector<int> anss;
-    for (int target = 0; target < 10; target++) {
-        char tar = target + '0';
-        //targetが各リールの何番目にあるか？
-        vector<int> pos;
-        map<int, int> counter;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (s[i][j] == tar) {
-                    if (counter.count(j)) pos.push_back(j + counter[j]*10);
-                    else pos.push_back(j);
-                    counter[j] ++;
-                }
-            }
-        }
-        anss.push_back(*max_element(pos.begin(), pos.end()));
+    vector<long long> p = {a[0], b[0]};
+    bool ans = true;
+    for (int i = 1; i < n; i++) {
+        bool aok = false;
+        bool bok = false;
+        if (p[0] > 0 && abs(p[0] - a[i]) <= k) aok = true;
+        if (p[0] > 0 && abs(p[0] - b[i]) <= k) bok = true;
+        if (p[1] > 0 && abs(p[1] - a[i]) <= k) aok = true;
+        if (p[1] > 0 && abs(p[1] - b[i]) <= k) bok = true;
+        if (!aok && !bok) {ans = false;}
+        if (aok) p[0] = a[i];
+        else p[0] = -1;
+        if (bok) p[1] = b[i];
+        else p[1] = -1;
     }
 
-    cout << *min_element(anss.begin(), anss.end()) << endl;
+    if (ans) cout << "Yes" << endl;
+    else cout << "No" << endl;
 
     return 0;
 }

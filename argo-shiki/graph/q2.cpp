@@ -73,28 +73,22 @@ class UnionFind {
 
 int main() {
 
-    int n; cin >> n;
-    vector<string> s(n); rep(i, n) cin >> s[i];
-
-    vector<int> anss;
-    for (int target = 0; target < 10; target++) {
-        char tar = target + '0';
-        //targetが各リールの何番目にあるか？
-        vector<int> pos;
-        map<int, int> counter;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (s[i][j] == tar) {
-                    if (counter.count(j)) pos.push_back(j + counter[j]*10);
-                    else pos.push_back(j);
-                    counter[j] ++;
-                }
-            }
-        }
-        anss.push_back(*max_element(pos.begin(), pos.end()));
+    int n, m; cin >> n >> m;
+    int a, b;
+    map<int, vector<int>> mp;
+    for (int i = 0; i < m; i++) {
+        cin >> a >> b;
+        mp[a].push_back(b);
     }
 
-    cout << *min_element(anss.begin(), anss.end()) << endl;
+    for (int i = 0; i < n; i++) {
+      vector<string> ns;
+      sort(mp[i].begin(), mp[i].end());
+      
+        for (int j = 0; j < mp[i].size(); j++) {
+            
+        }
+    }
 
     return 0;
 }

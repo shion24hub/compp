@@ -73,28 +73,41 @@ class UnionFind {
 
 int main() {
 
-    int n; cin >> n;
-    vector<string> s(n); rep(i, n) cin >> s[i];
+    int n, q; cin >> n >> q;
+	map<int, int> ball_pos, pos_ball;
+	for (int i = 1; i <= n; i++) {
+		ball_pos[i] = i;
+		pos_ball[i] = i;
+	}
+	int x;
+	for (int i = 0; i < q; i++) {
+		cin >> x;
+		if (ball_pos[x] != n) {
+			//ボールが右端になかった場合
+			int xpos = ball_pos[x];
+			int rpos = xpos + 1;
+			int right_ball = pos_ball[rpos];
+			
+			ball_pos[x] = rpos;
+			ball_pos[right_ball] = xpos;
+			pos_ball[rpos] = x;
+			pos_ball[xpos] = right_ball;
+		}
+		else {
+			//ボールが右端にあった場合
+			int xpos = ball_pos[x];
+			int lpos = xpos - 1;
+			int left_ball = pos_ball[lpos];
 
-    vector<int> anss;
-    for (int target = 0; target < 10; target++) {
-        char tar = target + '0';
-        //targetが各リールの何番目にあるか？
-        vector<int> pos;
-        map<int, int> counter;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (s[i][j] == tar) {
-                    if (counter.count(j)) pos.push_back(j + counter[j]*10);
-                    else pos.push_back(j);
-                    counter[j] ++;
-                }
-            }
-        }
-        anss.push_back(*max_element(pos.begin(), pos.end()));
-    }
+			ball_pos[x] = lpos;
+			ball_pos[left_ball] = xpos;
+			pos_ball[lpos] = x;
+			pos_ball[xpos] = left_ball;
+		}
+	}
 
-    cout << *min_element(anss.begin(), anss.end()) << endl;
+	for (int i = 1; i <= n; i++) cout << pos_ball[i] << " ";
+	cout << endl;
 
     return 0;
 }

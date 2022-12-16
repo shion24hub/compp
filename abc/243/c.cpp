@@ -74,27 +74,35 @@ class UnionFind {
 int main() {
 
     int n; cin >> n;
-    vector<string> s(n); rep(i, n) cin >> s[i];
+    vector<pair<long long, long long>> xy(n);
+    long long x, y;
+    for (int i = 0; i < n; i++) {
+        cin >> x >> y;
+        xy[i] = make_pair(x, y);
+    }
+    string s; cin >> s;
 
-    vector<int> anss;
-    for (int target = 0; target < 10; target++) {
-        char tar = target + '0';
-        //targetが各リールの何番目にあるか？
-        vector<int> pos;
-        map<int, int> counter;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (s[i][j] == tar) {
-                    if (counter.count(j)) pos.push_back(j + counter[j]*10);
-                    else pos.push_back(j);
-                    counter[j] ++;
-                }
-            }
+    map<long long, vector<pair<long long, char>>> mp;
+    for (int i = 0; i < n; i++) {mp[xy[i].second].push_back(make_pair(xy[i].first, s[i]));}
+
+    // for (auto p : mp) {
+    //     cout << p.first << " : ";
+    //     for (int i = 0; i < p.second.size(); i++) cout << p.second[i] << " ";
+    //     cout << endl;
+    // }
+
+
+
+    bool ans = false;
+    for (auto p : mp) {
+        sort(p.second.begin(), p.second.end());
+        for (int i = 1; i < p.second.size(); i++) {
+            if (p.second[i-1].second == 'R' && p.second[i].second == 'L') ans = true; 
         }
-        anss.push_back(*max_element(pos.begin(), pos.end()));
     }
 
-    cout << *min_element(anss.begin(), anss.end()) << endl;
+    if (ans) cout << "Yes" << endl;
+    else cout << "No" << endl;
 
     return 0;
 }
