@@ -73,7 +73,21 @@ class UnionFind {
 
 int main() {
 
-    
+    long long n, k; cin >> n >> k;
+    vector<long long> a(n); rep(i, n) cin >> a[i];
+    vector<long long> sa = a;
+
+    long long all = k / n;
+    long long rem = k - (all * n);
+
+    sort(sa.begin(), sa.end());
+    map<long long, int> mp;
+    for (int i = 0; i < rem; i++) {mp[sa[i]] ++;}
+
+    for (int i = 0; i < n; i++) {
+        if (mp.count(a[i])) {cout << all + 1 << endl;}
+        else {cout << all << endl;}
+    }
 
     return 0;
 }
