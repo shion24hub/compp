@@ -47,11 +47,28 @@ def sort2dListBySpecificRow(l : list, by = 0, reverse=False) :
     return ret
 
 def solve() : 
-    s = input()
-    num1 = int(s[0])
-    num2 = int(s[2])
+    s = list(input())
+    t = list(input())
 
-    print(num1 * num2)
+    if s == t :
+        print("Yes")
+        return
+    
+    snums = [ord(iis) - 97 for iis in s]
+    ans = False
+    for rot in range(1, 26) :
+        check = []
+        for num in snums :
+            check.append(LOWERCASE[(rot + num) % 26])
+        if check == t :
+            ans = True
+    
+    print("Yes") if ans else print("No")
+
+
+
+        
+        
 
 if __name__ == '__main__' :
     solve()

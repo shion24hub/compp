@@ -46,12 +46,23 @@ def sort2dListBySpecificRow(l : list, by = 0, reverse=False) :
     ret = transpose(sorted(transpose(l), key=lambda x: x[by], reverse=reverse))
     return ret
 
-def solve() : 
-    s = input()
-    num1 = int(s[0])
-    num2 = int(s[2])
+def sum (a, l) :
+    return l * (a + l) / 2
 
-    print(num1 * num2)
+def solve() : 
+    a = 1
+    l = 9
+    mod = 998244353
+    ss = []
+    ssmod = []
+    for i in range(17) :
+        s = sum(a, l)
+        ss.append(int(s))
+        ssmod.append(int(s%mod))
+        l *= 10
+
+    print("ss : {}".format(ss))
+    print("sm : {}".format(ssmod))
 
 if __name__ == '__main__' :
     solve()

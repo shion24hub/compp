@@ -47,11 +47,33 @@ def sort2dListBySpecificRow(l : list, by = 0, reverse=False) :
     return ret
 
 def solve() : 
-    s = input()
-    num1 = int(s[0])
-    num2 = int(s[2])
+    n = int(input())
+    ls = []
+    rs = []
+    for _ in range(n) :
+        t, l, r = map(int, input().split())
+        if t == 1 :
+            ls.append(l)
+            rs.append(r)
+        if t == 2 :
+            ls.append(l)
+            rs.append(r - 0.5)
+        if t == 3 :
+            ls.append(l + 0.5)
+            rs.append(r)
+        if t == 4 :
+            ls.append(l + 0.5)
+            rs.append(r - 0.5)
 
-    print(num1 * num2)
+    ans = 0
+    for i in range(n) :
+        for j in range(n) :
+            if i == j :
+                continue
+            if ls[j] <= rs[i] and ls[i] <= rs[j] :
+                ans += 1
+    
+    print(int(ans / 2))
 
 if __name__ == '__main__' :
     solve()

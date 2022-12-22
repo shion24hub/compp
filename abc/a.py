@@ -47,11 +47,17 @@ def sort2dListBySpecificRow(l : list, by = 0, reverse=False) :
     return ret
 
 def solve() : 
-    s = input()
-    num1 = int(s[0])
-    num2 = int(s[2])
-
-    print(num1 * num2)
+    x, y = map(int, input().split())
+    rem = y - x
+    if rem < 0 :
+        print(0)
+        return
+    q = rem // 10
+    r = rem % 10
+    if r > 0 :
+        print(q + 1)
+        return
+    print(q)
 
 if __name__ == '__main__' :
     solve()
